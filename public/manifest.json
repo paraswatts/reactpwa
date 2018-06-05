@@ -1,0 +1,21 @@
+{
+  "short_name": "Easy Pay",
+  "name": "Easy Pay",
+  "icons": [
+    {
+      "src": "credit-card192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "credit-card.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#fff",
+  "background_color": "#fff",
+  "orientation":  "portrait"
+}
