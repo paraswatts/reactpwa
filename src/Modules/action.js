@@ -27,7 +27,7 @@ export function checkNumber(mobileNumber) {
     dispatch(resetValue())
     axios.post(`${AppConstants.API_URL}checkNumber`, qs.stringify({ residentMobileNo: mobileNumber }))
       .then(response => {
-        console.log("response", response.data)
+        console.log("response check number", response.data)
         dispatch({
           type: actionType.CHECK_NUMBER,
           numberExist: response.data.error,

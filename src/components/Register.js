@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Carousel from 'nuka-carousel';
 import './css/Login.css';
 import PropTypes from 'prop-types';
-import  Alert  from 'react-s-alert';
+import Alert from 'react-s-alert';
 
 import Box from 'react-layout-components';
 import { push } from 'react-router-redux'
@@ -11,6 +11,8 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import checked from '../images/checked.svg';
 import unchecked from '../images/uncheked.svg';
+import successtick from '../images/successtick.svg';
+
 import { withStyles } from '@material-ui/core';
 import send from '../images/paper-plane.svg'
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -20,7 +22,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { checkNumber,verifyOTP,resetResisterProps,registerUser } from '../Modules/action';
+import { checkNumber, verifyOTP, resetResisterProps, registerUser } from '../Modules/action';
 import Spinner from './spinner'
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 
@@ -39,27 +41,28 @@ class Register extends Component {
       anchorEl: null,
       showPassword: true,
       dialogOpen: false,
-      mobileNumber: '9888769238',
+      dialogSuccess: false,
+      mobileNumber: '9888896321',
       accountType: '',
       resident: false,
       tenent: false,
       society: false,
       message: '',
       snackbar: false,
-      otp:'123456',
-      flatOwnerName:'sas',
-      flatNumber:'4353',
-      password:'dasdas',
-      email:'dsad@dsfs.com',
-      userName:'dasda',
-      userType:'resident',
+      otp: '123456',
+      flatOwnerName: 'sas',
+      flatNumber: '4353',
+      password: 'dasdas',
+      email: 'dsad@dsfs.com',
+      userName: 'dasda',
+      userType: 'resident',
     };
   }
 
   changePage = (path) => {
     this.props.history.push(path);
   }
-  
+
   handleClose = () => {
     this.setState({ snackbar: false });
   };
@@ -69,6 +72,14 @@ class Register extends Component {
 
   handleDialogClose = () => {
     this.setState({ dialogOpen: false });
+  };
+
+  handleDialogSuccessOpen = () => {
+    this.setState({ dialogSuccess: true });
+  };
+
+  handleDialogSuccessClose = () => {
+    this.setState({ dialogSuccess: false });
   };
 
 
@@ -110,7 +121,7 @@ class Register extends Component {
     else if (this.state.flatNumber == '') {
       this.setState({ message: 'Please enter flat number', snackbar: true })
     }
-    
+
     else if (this.state.mobileNumber == '') {
       this.setState({ message: 'Please enter mobile number', snackbar: true })
     }
@@ -123,20 +134,20 @@ class Register extends Component {
     else if (this.state.password == '') {
       this.setState({ message: 'Please enter password', snackbar: true })
     }
-    else if(this.state.email!='' && !emailReg.test(this.state.email)){
+    else if (this.state.email != '' && !emailReg.test(this.state.email)) {
       this.setState({ message: 'Please enter a valid email', snackbar: true })
 
     }
     else {
-      postObj.societyId =1
+      postObj.societyId = 1
       postObj.residentName = this.state.userName
-      postObj.ownerName = this.state.ownerName
-      postObj.residentPassword =this.state.password
-      postObj.userType =this.state.userType
-      postObj.residentMobileNo =this.state.mobileNumber
-      postObj.residentEmailId =this.state.email
-      postObj.createdAt ="2018-12-12"
-      postObj.flatno =this.state.flatNumber
+      postObj.ownerName = this.state.flatOwnerName
+      postObj.residentPassword = this.state.password
+      postObj.userType = this.state.userType
+      postObj.residentMobileNo = this.state.mobileNumber
+      postObj.residentEmailId = this.state.email
+      postObj.createdAt = "2018-12-12"
+      postObj.flatno = this.state.flatNumber
       // postObj.societyId("societyId",1)
       // postObj.append("residentName",this.state.userName)
       // postObj.append("ownerName",this.state.ownerName)
@@ -158,7 +169,7 @@ class Register extends Component {
     }
 
 
-   
+
   }
 
   verifyOTP = () => {
@@ -168,20 +179,20 @@ class Register extends Component {
     }
     else {
       //if (this.state.resident || this.state.tenent) {
-        this.props.verifyOTP(this.state.otp);
-     // }
+      this.props.verifyOTP(this.state.otp);
+      // }
       // else {
       //   console.log("society call")
       // }
     }
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     console.log("unmount")
-      this.props.resetResisterProps();
+    this.props.resetResisterProps();
   }
   handleChange = name => event => {
-    console.log(name,event.target.value)
+    console.log(name, event.target.value)
     this.setState({ [name]: event.target.value });
   }
   handleOTPChange = (event) => {
@@ -190,19 +201,19 @@ class Register extends Component {
   handleCheckedChange = (event) => {
     if (event.target.value == "Resident") {
       if (this.state.resident)
-        this.setState({ resident: false ,userType:'resident'})
+        this.setState({ resident: false, userType: 'resident' })
       else
         this.setState({ resident: true, tenent: false, society: false })
     }
     else if (event.target.value == "Tenent") {
       if (this.state.tenent)
-        this.setState({ tenent: false,userType:'tenent' })
+        this.setState({ tenent: false, userType: 'tenent' })
       else
         this.setState({ resident: false, tenent: true, society: false })
     }
     else {
       if (this.state.society)
-        this.setState({ society: false ,userType:'society'})
+        this.setState({ society: false, userType: 'society' })
       else
         this.setState({ resident: false, tenent: false, society: true })
     }
@@ -214,32 +225,26 @@ class Register extends Component {
         setTimeout(function () { this.setState({ dialogOpen: true }); }.bind(this), 1000);
       }
     }
-    console.log(nextProps.showAlert,this.props.showAlert,"showAlert otp")
+    console.log(nextProps.showAlert, this.props.showAlert, "showAlert otp")
 
-    if(nextProps.showAlert != this.props.showAlert){
-    console.log("show alert",this.props.message)
-    if(nextProps.showAlert){
-      console.log("show alert1",this.props.message)
-      this.setState({snackbar:true})
-        
+    if (nextProps.showAlert != this.props.showAlert) {
+      console.log("show alert", this.props.message)
+      if (nextProps.showAlert) {
+        console.log("show alert1", this.props.message)
+        this.setState({ snackbar: true })
+
+      }
+
     }
-      
-  }
-  if(nextProps.message){
-    this.setState({message:this.props.message})
-  }
+    if (nextProps.message) {
+      this.setState({ message: this.props.message })
+    }
 
-  
-    console.log(nextProps.verifyOTPNumber,this.props.verifyOTPNumber,"verify otp")
-  //   if(nextProps.verifyOTPNumber != this.props.verifyOTPNumber){
-  //     console.log("inside if")
-  //   if(!nextProps.verifyOTPNumber)
-  //   {
-  //     console.log("inside if 2")
-  //     this.props.history.push("/signin");
-  //   }    
-    
-  // }
+    if (nextProps.userRegistered != this.props.userRegistered) {
+      if (this.props.userRegistered) {
+        this.setState({ dialogSuccess: true })
+      }
+    }
   }
   // shouldComponentUpdate(nextProps, nextState) {
   //   return nextProps.numberExist !== this.props.numberExist || nextProps.showLoader !== this.props.showLoader
@@ -253,7 +258,7 @@ class Register extends Component {
       <div style={{ background: 'rgb(227,227,229)', width: '100vw', height: '100vh' }}>
         {this.props.showLoader ? <Spinner /> : null
         }
-       
+
         <Snackbar
           ContentProps={{
             classes: classes.myCustomBackground,
@@ -262,11 +267,12 @@ class Register extends Component {
           anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
           open={this.state.snackbar}
           onClose={this.handleClose}
-        
+
           message={<span id="message-id">{this.state.message}</span>}
         />
         <Box className={"sampleBorderClass"} style={{ width: '100%', height: '100%', flexDirection: 'column', position: 'fixed' }}>
           <Dialog
+            disableBackdropClick={false}
             className={"sampleBorderClass4"}
             open={this.state.dialogOpen}
             onClose={this.handleDialogClose}
@@ -304,22 +310,49 @@ class Register extends Component {
 
             </DialogActions>
           </Dialog>
+
+          <Dialog
+            disableBackdropClick={true}
+            className={"sampleBorderClass4"}
+            open={this.state.dialogSuccess}
+            onClose={this.handleDialogSuccessClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+
+            <DialogContent style={{ padding: 10, alignItems: 'center', justifyContent: 'center' }} className={"sampleBorderClass4"}>
+
+              <DialogContentText className={"sampleBorderClass4"} style={{ textAlign: 'center', alignItems: 'center', justifyContent: 'center', color: 'rgb(84,88,94)' }} id="alert-dialog-description">
+                Successfully Registered
+            </DialogContentText>
+
+              <img src={successtick} style={{ marginTop: 10, height: 90, width: 90, alignSelf: 'center' }}></img>
+
+            </DialogContent>
+            <DialogActions style={{ alignItems: 'center', justifyContent: 'center', marginTop: '2vw', marginBottom: '5vw' }}>
+
+              <span style={{ textAlign: 'center' }} className={"buttonDialogCancel"} onClick={this.changePage.bind(this, "/signin")}>
+                Go to login page
+            </span>
+
+            </DialogActions>
+          </Dialog>
           <Snackbar
-          ContentProps={{
-            classes: classes.myCustomBackground,
-          }}
-          autoHideDuration={2000}
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-          open={this.state.snackbar}
-          onClose={this.handleClose}
-          ContentProps={{
-            'aria-describedby': 'message-id',
-          }}
-          message={<span id="message-id">{this.state.message}</span>}
-        />    
+            ContentProps={{
+              classes: classes.myCustomBackground,
+            }}
+            autoHideDuration={2000}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            open={this.state.snackbar}
+            onClose={this.handleClose}
+            ContentProps={{
+              'aria-describedby': 'message-id',
+            }}
+            message={<span id="message-id">{this.state.message}</span>}
+          />
           <Box style={{ width: '100vw', height: '10vh', alignItems: 'center', justifyContent: 'space-between' }}>
             <span className={"sampleBorderClass"} style={{ color: 'rgb(81,80,86)', fontSize: '10vw', fontWeight: 600, marginLeft: 10 }}>Sign Up</span>
-            <span onClick={this.changePage.bind(this,"/signin")} className={"sampleBorderClass"} style={{ marginRight: 10, fontSize: '5vw', color: 'rgb(27,90,195)' }}>Login</span>
+            <span onClick={this.changePage.bind(this, "/signin")} className={"sampleBorderClass"} style={{ marginRight: 10, fontSize: '5vw', color: 'rgb(27,90,195)' }}>Login</span>
           </Box>
           <Box className={"sampleBorderClass"}>
             <span className={"sampleBorderClass"} style={{ marginLeft: "5vw", fontWeight: 800, fontSize: '3vw', color: 'rgb(27,90,195)', textAlign: 'flex-start' }}>Account Type</span>
@@ -367,14 +400,14 @@ class Register extends Component {
           </Box>
           <Box className={"signup"} style={{ background: '#fff', height: '100%', margin: '3vw', flexDirection: 'column' }}>
             {/* {this.props.numberExist ? */}
-            {!this.props.showRegistrationForm?
-            <Box style={{flexDirection:'column'}}>
-              <Box >
-              <span className={"sampleBorderClass"} style={{ margin: '3vw', fontSize: '3.5vw', color: 'rgb(27,90,195)', fontWeight: 600 }}>Mobile</span>
-              </Box>
-             
-            <Box  className={"sampleBorderClass"} style={{ marginLeft: '3vw', marginRight: '3vw', flexDirection: 'column' }}>
-              {/* <Box flex={3} className={"sampleBorderClass3"} >
+            {!this.props.showRegistrationForm ?
+              <Box style={{ flexDirection: 'column' }}>
+                <Box >
+                  <span className={"sampleBorderClass"} style={{ margin: '3vw', fontSize: '3.5vw', color: 'rgb(27,90,195)', fontWeight: 600 }}>Mobile</span>
+                </Box>
+
+                <Box className={"sampleBorderClass"} style={{ marginLeft: '3vw', marginRight: '3vw', flexDirection: 'column' }}>
+                  {/* <Box flex={3} className={"sampleBorderClass3"} >
 
                 <input
                   style={{ width: '100%', padding: '1vw',display:'none ' }}
@@ -387,180 +420,180 @@ class Register extends Component {
                 />
 
               </Box> */}
-                <Box className={"sampleBorderClass3"} style={{ width: '100%' }}>
+                  <Box className={"sampleBorderClass3"} style={{ width: '100%' }}>
 
-                  <input
-                    style={{ width: '100%', padding: '1vw' }}
-                    className={"registerInput"}
-                    placeholder="Mobile Number"
-                    margin="normal"
-                    onChange={this.handleChange('mobileNumber')}
-                    value={this.state.mobileNumber}
-                    type={'number'}
+                    <input
+                      style={{ width: '100%', padding: '1vw' }}
+                      className={"registerInput"}
+                      placeholder="Mobile Number"
+                      margin="normal"
+                      onChange={this.handleChange('mobileNumber')}
+                      value={this.state.mobileNumber}
+                      type={'number'}
 
-                />
-                {
-                  console.log(!this.props.numberExist && !this.props.showRegistrationForm)
-                }
-                {!this.props.numberExist && !this.props.showRegistrationForm?<img src={require('../images/tick.png')} style={{position:'absolute',height:'5.5vw',width:'5.5vw',alignSelf:'center',right:'6vw'}}></img>:null
-                }
+                    />
+                    {
+                      console.log(!this.props.numberExist && !this.props.showRegistrationForm)
+                    }
+                    {!this.props.numberExist && !this.props.showRegistrationForm ? <img src={require('../images/tick.png')} style={{ position: 'absolute', height: '5.5vw', width: '5.5vw', alignSelf: 'center', right: '6vw' }}></img> : null
+                    }
 
-                </Box> 
-              {!this.props.numberExist ? null :
-                <button  onClick={this.checkNumber} style={{ margin: '3vw', bottom: 0, marginTop: '8vw' }} className={"buttonNext"}>Verify Mobile Number</button>}
+                  </Box>
+                  {!this.props.numberExist ? null :
+                    <button onClick={this.checkNumber} style={{ margin: '3vw', bottom: 0, marginTop: '8vw' }} className={"buttonNext"}>Verify Mobile Number</button>}
 
-            </Box>
+                </Box>
 
-                  </Box>:null}
-                  {/* Third Form after otp verification */}
+              </Box> : null}
+            {/* Third Form after otp verification */}
 
-              {this.props.showRegistrationForm ? 
+            {this.props.showRegistrationForm ?
 
-            <Box className={"sampleBorderClass3"} style={{flexDirection:'column'}} >
+              <Box className={"sampleBorderClass3"} style={{ flexDirection: 'column' }} >
 
-            <Box >
-              <span className={"sampleBorderClass"} style={{ margin: '3vw', fontSize: '3.5vw', color: 'rgb(27,90,195)', fontWeight: 600 }}>Name of flat owner</span>
-              </Box>
-             
-            <Box className={"sampleBorderClass"} style={{ marginLeft: '3vw', marginRight: '3vw', flexDirection: 'column' }}>
-            
-                <Box className={"sampleBorderClass3"} style={{ width: '100%', }}>
+                <Box >
+                  <span className={"sampleBorderClass"} style={{ margin: '3vw', fontSize: '3.5vw', color: 'rgb(27,90,195)', fontWeight: 600 }}>Name of flat owner</span>
+                </Box>
 
-                  <input
-                    style={{ width: '100%', paddingTop: '2vw',paddingBottom:'2vw'  }}
-                    className={"registerInput"}
-                    placeholder="Name of flat owner"
-                    margin="normal"
-                    onChange={this.handleChange('flatOwnerName')}
-                    value={this.state.flatOwnerName}
+                <Box className={"sampleBorderClass"} style={{ marginLeft: '3vw', marginRight: '3vw', flexDirection: 'column' }}>
 
-                />
-               
+                  <Box className={"sampleBorderClass3"} style={{ width: '100%', }}>
 
-                </Box> 
-           
+                    <input
+                      style={{ width: '100%', paddingTop: '2vw', paddingBottom: '2vw' }}
+                      className={"registerInput"}
+                      placeholder="Name of flat owner"
+                      margin="normal"
+                      onChange={this.handleChange('flatOwnerName')}
+                      value={this.state.flatOwnerName}
 
-            </Box>
-            <Box >
-              <span className={"sampleBorderClass"} style={{ marginTop: '3vw',marginLeft:'3vw',marginRight:'3vw',marginBottom:'3vw', fontSize: '3.5vw', color: 'rgb(27,90,195)', fontWeight: 600 }}>Flat number</span>
-              </Box>
-             
-            <Box className={"sampleBorderClass"} style={{ marginLeft: '3vw', marginRight: '3vw', flexDirection: 'column' }}>
-            
-                <Box className={"sampleBorderClass3"} style={{ width: '100%', }}>
+                    />
 
-                  <input
-                    style={{ width: '100%', paddingTop: '2vw',paddingBottom:'2vw'  }}
-                    className={"registerInput"}
-                    placeholder="Flat number"
-                    margin="normal"
-                    onChange={this.handleChange('flatNumber')}
-                    value={this.state.flatNumber}
 
-                />
-                               </Box> 
-           
+                  </Box>
 
-            </Box>
-            <Box >
-              <span className={"sampleBorderClass"} style={{ marginTop: '3vw',marginLeft:'3vw',marginRight:'3vw',marginBottom:'3vw', fontSize: '3.5vw', color: 'rgb(27,90,195)', fontWeight: 600 }}>Mobile</span>
-              </Box>
-             
-            <Box className={"sampleBorderClass"} style={{ marginLeft: '3vw', marginRight: '3vw', flexDirection: 'column' }}>
-            
-                <Box className={"sampleBorderClass3"} style={{ width: '100%', }}>
 
-                  <input
-                    style={{ width: '100%', paddingTop: '2vw',paddingBottom:'2vw' }}
-                    className={"registerInput"}
-                    placeholder="Mobile Number"
-                    margin="normal"
-                    onChange={this.handleChange('mobileNumber')}
-                    value={this.state.mobileNumber}
-                    type={'number'}
+                </Box>
+                <Box >
+                  <span className={"sampleBorderClass"} style={{ marginTop: '3vw', marginLeft: '3vw', marginRight: '3vw', marginBottom: '3vw', fontSize: '3.5vw', color: 'rgb(27,90,195)', fontWeight: 600 }}>Flat number</span>
+                </Box>
 
-                />
-               
-                </Box> 
-           
+                <Box className={"sampleBorderClass"} style={{ marginLeft: '3vw', marginRight: '3vw', flexDirection: 'column' }}>
 
-            </Box>
+                  <Box className={"sampleBorderClass3"} style={{ width: '100%', }}>
 
-            <Box >
-              <span className={"sampleBorderClass"} style={{ marginTop: '3vw',marginLeft:'3vw',marginRight:'3vw',marginBottom:'3vw', fontSize: '3.5vw', color: 'rgb(27,90,195)', fontWeight: 600 }}>User name</span>
-              </Box>
-             
-            <Box className={"sampleBorderClass"} style={{ marginLeft: '3vw', marginRight: '3vw', flexDirection: 'column' }}>
-            
-                <Box className={"sampleBorderClass3"} style={{ width: '100%', }}>
+                    <input
+                      style={{ width: '100%', paddingTop: '2vw', paddingBottom: '2vw' }}
+                      className={"registerInput"}
+                      placeholder="Flat number"
+                      margin="normal"
+                      onChange={this.handleChange('flatNumber')}
+                      value={this.state.flatNumber}
 
-                  <input
-                    style={{ width: '100%', paddingTop: '2vw',paddingBottom:'2vw'  }}
-                    className={"registerInput"}
-                    placeholder="User name"
-                    margin="normal"
-                    onChange={this.handleChange('userName')}
-                    value={this.state.userName}
+                    />
+                  </Box>
 
-                />
-                               </Box> 
-           
 
-            </Box>
-            <Box >
-              <span className={"sampleBorderClass"} style={{ marginTop: '3vw',marginLeft:'3vw',marginRight:'3vw',marginBottom:'3vw', fontSize: '3.5vw', color: 'rgb(27,90,195)', fontWeight: 600 }}>Password</span>
-              </Box>
-             
-            <Box className={"sampleBorderClass"} style={{ marginLeft: '3vw', marginRight: '3vw', flexDirection: 'column' }}>
-            
-                <Box className={"sampleBorderClass3"} style={{ width: '100%', }}>
+                </Box>
+                <Box >
+                  <span className={"sampleBorderClass"} style={{ marginTop: '3vw', marginLeft: '3vw', marginRight: '3vw', marginBottom: '3vw', fontSize: '3.5vw', color: 'rgb(27,90,195)', fontWeight: 600 }}>Mobile</span>
+                </Box>
 
-                  <input
-                    style={{ width: '100%', paddingTop: '2vw',paddingBottom:'2vw'  }}
-                    className={"registerInput"}
-                    placeholder="Password"
-                    margin="normal"
-                    onChange={this.handleChange('password')}
-                    value={this.state.password}
-                    type={'password'}
+                <Box className={"sampleBorderClass"} style={{ marginLeft: '3vw', marginRight: '3vw', flexDirection: 'column' }}>
 
-                />
-               
-               
+                  <Box className={"sampleBorderClass3"} style={{ width: '100%', }}>
 
-                </Box> 
-           
+                    <input
+                      style={{ width: '100%', paddingTop: '2vw', paddingBottom: '2vw' }}
+                      className={"registerInput"}
+                      placeholder="Mobile Number"
+                      margin="normal"
+                      onChange={this.handleChange('mobileNumber')}
+                      value={this.state.mobileNumber}
+                      type={'number'}
 
-            </Box>
-            <Box >
-              <span className={"sampleBorderClass"} style={{ marginTop: '3vw',marginLeft:'3vw',marginRight:'3vw',marginBottom:'3vw', fontSize: '3.5vw', color: 'rgb(27,90,195)', fontWeight: 600 }}>Email(optional)</span>
-              </Box>
-             
-            <Box className={"sampleBorderClass"} style={{ marginLeft: '3vw', marginRight: '3vw', flexDirection: 'column' }}>
-            
-                <Box className={"sampleBorderClass3"} style={{ width: '100%', }}>
+                    />
 
-                  <input
-                    style={{ width: '100%', paddingTop: '2vw',paddingBottom:'2vw' }}
-                    className={"registerInput"}
-                    placeholder="Email"
-                    margin="normal"
-                    type={"email"}
-                    onChange={this.handleChange('email')}
-                    value={this.state.email}
+                  </Box>
 
-                />
-              
-                </Box> 
-                <button  onClick={this.submitForm} style={{position:'absolute',alignSelf:'center',marginBottom:'6vw', background: 'rgb(0,214,100)',bottom:0,  bottom: 0, marginTop: '8vw',alignItem:'center',justifyContent:'center',color:'white',border:'0px',width:'88%',padding:'3vw',fontSize:'5vw',textAlign:'center' }} >Submit<img src={send} style={{height:'6vw',width:'6vw',marginLeft:'3vw',alignSelf:'center'}}/></button>
 
-            </Box>
+                </Box>
 
-            </Box>:null}
+                <Box >
+                  <span className={"sampleBorderClass"} style={{ marginTop: '3vw', marginLeft: '3vw', marginRight: '3vw', marginBottom: '3vw', fontSize: '3.5vw', color: 'rgb(27,90,195)', fontWeight: 600 }}>User name</span>
+                </Box>
+
+                <Box className={"sampleBorderClass"} style={{ marginLeft: '3vw', marginRight: '3vw', flexDirection: 'column' }}>
+
+                  <Box className={"sampleBorderClass3"} style={{ width: '100%', }}>
+
+                    <input
+                      style={{ width: '100%', paddingTop: '2vw', paddingBottom: '2vw' }}
+                      className={"registerInput"}
+                      placeholder="User name"
+                      margin="normal"
+                      onChange={this.handleChange('userName')}
+                      value={this.state.userName}
+
+                    />
+                  </Box>
+
+
+                </Box>
+                <Box >
+                  <span className={"sampleBorderClass"} style={{ marginTop: '3vw', marginLeft: '3vw', marginRight: '3vw', marginBottom: '3vw', fontSize: '3.5vw', color: 'rgb(27,90,195)', fontWeight: 600 }}>Password</span>
+                </Box>
+
+                <Box className={"sampleBorderClass"} style={{ marginLeft: '3vw', marginRight: '3vw', flexDirection: 'column' }}>
+
+                  <Box className={"sampleBorderClass3"} style={{ width: '100%', }}>
+
+                    <input
+                      style={{ width: '100%', paddingTop: '2vw', paddingBottom: '2vw' }}
+                      className={"registerInput"}
+                      placeholder="Password"
+                      margin="normal"
+                      onChange={this.handleChange('password')}
+                      value={this.state.password}
+                      type={'password'}
+
+                    />
+
+
+
+                  </Box>
+
+
+                </Box>
+                <Box >
+                  <span className={"sampleBorderClass"} style={{ marginTop: '3vw', marginLeft: '3vw', marginRight: '3vw', marginBottom: '3vw', fontSize: '3.5vw', color: 'rgb(27,90,195)', fontWeight: 600 }}>Email(optional)</span>
+                </Box>
+
+                <Box className={"sampleBorderClass"} style={{ marginLeft: '3vw', marginRight: '3vw', flexDirection: 'column' }}>
+
+                  <Box className={"sampleBorderClass3"} style={{ width: '100%', }}>
+
+                    <input
+                      style={{ width: '100%', paddingTop: '2vw', paddingBottom: '2vw' }}
+                      className={"registerInput"}
+                      placeholder="Email"
+                      margin="normal"
+                      type={"email"}
+                      onChange={this.handleChange('email')}
+                      value={this.state.email}
+
+                    />
+
+                  </Box>
+                  <button onClick={this.submitForm} style={{ position: 'absolute', alignSelf: 'center', marginBottom: '6vw', background: 'rgb(0,214,100)', bottom: 0, bottom: 0, marginTop: '8vw', alignItem: 'center', justifyContent: 'center', color: 'white', border: '0px', width: '88%', padding: '3vw', fontSize: '5vw', textAlign: 'center' }} >Submit<img src={send} style={{ height: '6vw', width: '6vw', marginLeft: '3vw', alignSelf: 'center' }} /></button>
+
+                </Box>
+
+              </Box> : null}
 
 
             <Box flex={2} />
-            {!this.props.numberExist && !this.props.showRegistrationForm?
+            {!this.props.numberExist && !this.props.showRegistrationForm ?
               <Box flex={7} className={"sampleBorderClass2"} style={{ justifyContent: 'center', flexDirection: 'column' }}>
                 <span style={{ fontSize: '7vw', color: 'rgb(44,44,54)', fontWeight: 600 }}>Enter OTP</span>
                 <span style={{ fontSize: '3.5vw', color: 'rgb(44,44,54)', fontWeight: 600, marginTop: '4vw' }}>Please enter the OTP received via SMS below</span>
@@ -587,10 +620,11 @@ const mapStateToProps = (state) => {
     numberExist: state.test.numberExist,
     showLoader: state.test.showLoader,
     showDialog: state.test.showDialog,
-    verifyOTPNumber:state.test.verifyOTPNumber,
-    showAlert:state.test.showAlert,
-    message:state.test.message,
-    showRegistrationForm:state.test.showRegistrationForm
+    verifyOTPNumber: state.test.verifyOTPNumber,
+    showAlert: state.test.showAlert,
+    message: state.test.message,
+    showRegistrationForm: state.test.showRegistrationForm,
+    userRegistered: state.test.userRegistered
   };
 }
 const mapDispatchToProps = (dispatch) => bindActionCreators({

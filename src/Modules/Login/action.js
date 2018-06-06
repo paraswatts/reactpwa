@@ -17,7 +17,7 @@ export function signInUser(mobileNumber, password) {
 
     axios.post(`${AppConstants.API_URL}login`, qs.stringify({ mobileno: mobileNumber, password: password }))
       .then(response => {
-        console.log("response", response.data)
+        console.log("response login", response.data)
         dispatch({
           type: actionType.LOGIN_SUCCESSFULL,
           loginStatus: response.data.error,
